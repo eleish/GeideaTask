@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,9 @@ class UsersFragment : BindingFragment<FragmentUsersBinding>() {
         viewModel.run {
             loading.observe(viewLifecycleOwner) {
                 binding.loadingPb.setGone(it.not())
+            }
+            error.observe(viewLifecycleOwner) {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
             }
             users.observe(viewLifecycleOwner) {
                 usersAdapter?.submitList(it)

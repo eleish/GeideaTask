@@ -10,10 +10,18 @@ class FetchUserDetailsUseCaseImpl(
 ) : FetchUserDetailsUseCase {
     override suspend fun invoke(userId: Int): Result<User> {
         return try {
-            Result.Success(repository.fetchRemoteUserDetails(userId).data)
+            val user = repository.fetchRemoteUserDetails(userId).data
+            repository.cacheUsers(user)
+            Result.Success(user)
         } catch (e: Exception) {
             try {
-                Result.Success(repository.fetchCachedUserDetails(userId))
+                val user = repository.fetchCachedUserDetails(userId)
+                if (user != null) {
+                    Result.Success(user)
+                } else {
+                    Result.Failure(Exception("Cache miss"))
+                }
+
             } catch (e: Exception) {
                 Result.Failure(e)
             }

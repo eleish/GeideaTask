@@ -10,9 +10,13 @@ class FetchUsersUseCaseImpl(
 ) : FetchUsersUseCase {
     override suspend fun invoke(): Result<List<User>> {
         return try {
-            Result.Success(repository.fetchRemoteUsers().data)
+            val users = repository.fetchRemoteUsers().data
+            repository.clearCachedUsers()
+            repository.cacheUsers(*users.toTypedArray())
+            Result.Success(users)
         } catch (e: Exception) {
             e.printStackTrace()
+
             try {
                 Result.Success(repository.fetchCachedUsers())
             } catch (e: Exception) {
