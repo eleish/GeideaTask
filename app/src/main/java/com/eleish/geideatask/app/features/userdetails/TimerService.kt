@@ -5,20 +5,29 @@ import android.content.Intent
 import android.os.Binder
 import android.os.CountDownTimer
 import android.os.IBinder
-import kotlin.math.roundToLong
 
 class TimerService : Service() {
 
     private val binder: IBinder = TimerServiceBinder()
 
+    private var timer: CountDownTimer? = null
+
     private var onTimerTick: ((remaining: Long) -> Unit)? = null
     private var onTimerCompleted: (() -> Unit)? = null
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    fun setTimerListener(
+        onTimerTick: (remainingMillis: Long) -> Unit,
+        onTimerCompleted: () -> Unit,
+    ) {
+        this.onTimerTick = onTimerTick
+        this.onTimerCompleted = onTimerCompleted
+    }
 
-        object : CountDownTimer(5_000, 1_000) {
+    fun startTimer(millis: Long) {
+        timer?.cancel()
+        timer = object : CountDownTimer(millis, 1_000) {
             override fun onTick(p0: Long) {
-                onTimerTick?.invoke((p0 / 1000.0).roundToLong())
+                onTimerTick?.invoke(p0)
             }
 
             override fun onFinish() {
@@ -26,13 +35,6 @@ class TimerService : Service() {
             }
 
         }.start()
-
-        return super.onStartCommand(intent, flags, startId)
-    }
-
-    fun setTimerListener(onTimerTick: (remaining: Long) -> Unit, onTimerCompleted: () -> Unit) {
-        this.onTimerTick = onTimerTick
-        this.onTimerCompleted = onTimerCompleted
     }
 
     override fun onBind(p0: Intent?): IBinder {
@@ -42,5 +44,11 @@ class TimerService : Service() {
     inner class TimerServiceBinder : Binder() {
         val service: TimerService
             get() = this@TimerService
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer?.cancel()
+        timer = null
     }
 }

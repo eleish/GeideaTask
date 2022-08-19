@@ -18,6 +18,7 @@ import com.eleish.geideatask.app.core.BindingFragment
 import com.eleish.geideatask.app.core.extensions.setGone
 import com.eleish.geideatask.databinding.FragmentUserDetailsBinding
 import com.eleish.geideatask.entities.User
+import kotlin.math.roundToLong
 
 class UserDetailsFragment : BindingFragment<FragmentUserDetailsBinding>() {
 
@@ -32,17 +33,19 @@ class UserDetailsFragment : BindingFragment<FragmentUserDetailsBinding>() {
     private val connection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             val binder = service as TimerService.TimerServiceBinder
+            val timerService = binder.service
 
-            binder.service.setTimerListener(
+            timerService.setTimerListener(
                 onTimerTick = { remaining ->
-                    binding.timerTv.text = remaining.toString()
+                    viewModel.remainingTimerMillis = remaining
+                    binding.timerTv.text = (remaining / 1000.0).roundToLong().toString()
                 },
                 onTimerCompleted = {
                     findNavController().popBackStack()
                 }
             )
 
-            context?.startService(Intent(context, TimerService::class.java))
+            timerService.startTimer(viewModel.remainingTimerMillis)
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {

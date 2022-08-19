@@ -18,6 +18,8 @@ class UserDetailsViewModel(
     val user: LiveData<User>
         get() = _user
 
+    var remainingTimerMillis = 5000L
+
     init {
         fetchUserData()
     }
