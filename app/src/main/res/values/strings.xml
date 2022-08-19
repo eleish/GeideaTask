@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GeideaTask</string>
+    <string name="id">ID:</string>
+    <string name="name">Name:</string>
 </resources>
