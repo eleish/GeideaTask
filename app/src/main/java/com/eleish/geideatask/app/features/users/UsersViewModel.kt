@@ -4,11 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eleish.geideatask.domain.usecases.FetchUsersUseCase
+import com.eleish.geideatask.domain.usecases.FetchUsersUseCaseImpl
+import com.eleish.geideatask.entities.Result
 import com.eleish.geideatask.entities.User
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class UsersViewModel : ViewModel() {
+class UsersViewModel(
+    private val fetchUsersUseCase: FetchUsersUseCase = FetchUsersUseCaseImpl(),
+) : ViewModel() {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean>
@@ -25,14 +29,15 @@ class UsersViewModel : ViewModel() {
     fun fetchUsers() {
         _loading.value = true
         viewModelScope.launch {
-            delay(1000)
+            when (val result = fetchUsersUseCase.invoke()) {
+                is Result.Failure -> {
+
+                }
+                is Result.Success -> {
+                    _users.postValue(result.data)
+                }
+            }
             _loading.postValue(false)
-            _users.postValue(listOf(
-                User(1,
-                    "Mohamed",
-                    "Eleish",
-                    "mohamed.a.eleish@gmail.com",
-                    "https://m.media-amazon.com/images/M/MV5BMTY2ODQ3NjMyMl5BMl5BanBnXkFtZTcwODg0MTUzNA@@._V1_.jpg")))
         }
     }
 }
