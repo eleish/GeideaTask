@@ -1,6 +1,7 @@
 package com.eleish.geideatask.domain.core.network
 
 import android.util.Log
+import com.eleish.geideatask.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
@@ -8,10 +9,12 @@ import java.util.concurrent.TimeUnit
 object OkHttpClient {
     fun newInstance(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor { message ->
-            Log.d(
-                "OkHttpClient",
-                "API Request -> $message"
-            )
+            if (BuildConfig.DEBUG) {
+                Log.d(
+                    "OkHttpClient",
+                    "API Request -> $message"
+                )
+            }
         }.apply {
             level = HttpLoggingInterceptor.Level.BODY
         }

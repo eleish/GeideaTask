@@ -15,7 +15,6 @@ class FetchUsersUseCaseImpl(
             repository.cacheUsers(*users.toTypedArray())
             Result.Success(users)
         } catch (e: Exception) {
-            e.printStackTrace()
 
             try {
                 Result.Success(repository.fetchCachedUsers())
