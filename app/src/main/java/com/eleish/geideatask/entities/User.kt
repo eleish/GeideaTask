@@ -8,5 +8,12 @@ data class User(
     @SerializedName("first_name")
     val firstName: String,
     @SerializedName("last_name")
-    val lastName: String
-)
+    val lastName: String,
+    @SerializedName("email")
+    val email: String,
+    @SerializedName("avatar")
+    val avatar: String,
+) {
+    val fullName: String
+        get() = "$firstName $lastName"
+}

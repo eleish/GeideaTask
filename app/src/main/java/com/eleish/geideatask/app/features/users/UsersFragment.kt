@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.eleish.geideatask.R
 import com.eleish.geideatask.app.core.BindingFragment
 import com.eleish.geideatask.app.core.extensions.setGone
 import com.eleish.geideatask.databinding.FragmentUsersBinding
 
-class UsersFragment : BindingFragment<FragmentUsersBinding>(R.layout.fragment_users) {
+class UsersFragment : BindingFragment<FragmentUsersBinding>() {
 
     private var usersAdapter: UsersAdapter? = null
 
@@ -39,7 +39,8 @@ class UsersFragment : BindingFragment<FragmentUsersBinding>(R.layout.fragment_us
         with(binding.usersRv) {
             layoutManager = LinearLayoutManager(context)
             adapter = UsersAdapter {
-                // TODO
+                findNavController().navigate(UsersFragmentDirections.actionUsersFragmentToUserDetailsFragment(
+                    it.id))
             }.also {
                 usersAdapter = it
             }

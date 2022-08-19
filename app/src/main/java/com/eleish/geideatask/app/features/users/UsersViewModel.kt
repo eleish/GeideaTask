@@ -28,8 +28,11 @@ class UsersViewModel : ViewModel() {
             delay(1000)
             _loading.postValue(false)
             _users.postValue(listOf(
-                User(1, "Mohamed", "Eleish"),
-                User(2, "Mohamed", "Ayman")))
+                User(1,
+                    "Mohamed",
+                    "Eleish",
+                    "mohamed.a.eleish@gmail.com",
+                    "https://m.media-amazon.com/images/M/MV5BMTY2ODQ3NjMyMl5BMl5BanBnXkFtZTcwODg0MTUzNA@@._V1_.jpg")))
         }
     }
 }

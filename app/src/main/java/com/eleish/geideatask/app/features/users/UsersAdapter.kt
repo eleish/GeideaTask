@@ -12,7 +12,7 @@ class UsersAdapter(private val onItemClicked: (User) -> Unit) :
     ListAdapter<User, UsersAdapter.ViewHolder>(DIFF_UTIL) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ItemUserBinding.inflate(LayoutInflater.from(parent.context)).run {
+        return ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false).run {
             ViewHolder(this)
         }
     }
@@ -22,9 +22,7 @@ class UsersAdapter(private val onItemClicked: (User) -> Unit) :
 
         with(holder.binding) {
             idTV.text = user.id.toString()
-
-            val fullName = "${user.firstName} ${user.lastName}"
-            nameTV.text = fullName
+            nameTV.text = user.fullName
 
             root.setOnClickListener {
                 onItemClicked.invoke(user)
