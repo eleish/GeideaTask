@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GeideaTask"
         tools:targetApi="31">
+
+        <service android:name=".app.features.userdetails.TimerService" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
