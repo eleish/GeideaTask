@@ -53,7 +53,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation  "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
     implementation "androidx.room:room-runtime:$room_version"

@@ -2,7 +2,6 @@ package com.eleish.geideatask.app.features.users
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eleish.geideatask.app.core.BaseViewModel
 import com.eleish.geideatask.domain.usecases.FetchUsersUseCase
